@@ -1,13 +1,15 @@
+import { createReadStream, createWriteStream } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import { createGunzip } from 'zlib';
+
 const decompress = async () => {
-    const fs = await import('fs');
-    const zlib = await import('zlib');
-    const path = await import('path');
-    const dir = path.dirname('src/zip/files');
-    const fileName = path.join(dir, '/files/fileToCompress.txt');
+    const dir = dirname(fileURLToPath(import.meta.url));
+    const fileName = join(dir, 'files' , 'fileToCompress.txt');
    
-    const inputStream = fs.createReadStream(path.join(dir, '/files/archive.gz'));
-    const unzip = zlib.createGunzip();
-    const outputStream = fs.createWriteStream(fileName)
+    const inputStream = createReadStream(join(dir, 'files', 'archive.gz'));
+    const unzip = createGunzip();
+    const outputStream = createWriteStream(fileName)
     inputStream.pipe(unzip).pipe(outputStream);
 };
 

@@ -1,6 +1,6 @@
-const stream = await import('stream');
+import { Transform } from 'stream';
 
-class ReverseTransform extends stream.Transform {
+class ReverseTransform extends Transform {
     constructor(options) {
         super(options);
     }

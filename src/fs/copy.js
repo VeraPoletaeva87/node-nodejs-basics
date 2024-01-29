@@ -1,15 +1,17 @@
+import { mkdir, readdir, copyFile } from 'fs/promises';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
 const copy = async () => {
-    const { mkdir, readdir, copyFile } = await import('fs/promises');
-    const path = await import('path');
-    const dir = path.dirname('src/fs/files');
-    const newFolder = path.join(dir, '/files_copy');
+    const dir = dirname(fileURLToPath(import.meta.url));
+    const newFolder = join(dir, 'files_copy');
     try {
-        const folder = path.join(dir, '/files');
+        const folder = join(dir, 'files');
         const files = await readdir(folder);
         await mkdir(newFolder, { recursive: false });
         files.forEach(async file => {
-            const fileSource = path.join(folder, file);
-            const fileDestination = path.join(newFolder, file);
+            const fileSource = join(folder, file);
+            const fileDestination = join(newFolder, file);
             console.log(fileSource+'-'+fileDestination);
             await copyFile(fileSource, fileDestination);
           })

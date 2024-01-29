@@ -1,9 +1,12 @@
+import { createWriteStream } from 'fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+
 const write = async () => {
-    const fs = await import('fs');
-    const path = await import('path');
-    const dir = path.dirname('src/streams/files');
-    const fileName = path.join(dir, '/files/fileToWrite.txt');
-    const stream = fs.createWriteStream(fileName, 'utf-8');
+    const dir = dirname(fileURLToPath(import.meta.url));
+    const fileName = join(dir, 'files', 'fileToWrite.txt');
+
+    const stream = createWriteStream(fileName, 'utf-8');
     process.stdin.on('data', (data) => {
         stream.write(data);
     });
